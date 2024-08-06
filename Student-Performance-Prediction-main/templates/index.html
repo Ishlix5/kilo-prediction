@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Performance Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  </head>
+  <style>
+    body {
+      padding: 30px;
+    }
+    a{
+ 
+      margin-left: 30px;
+    }
+
+    h1 {
+      padding: 20px;
+      font-size: 45px;
+      color: rgb(0, 0, 0);
+      text-align: center;
+    }
+    h3{
+      
+      margin-left: 32%;
+    }
+
+    .warning {
+      color: red;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .card {
+      margin-left: 410px;
+      margin-top: 20px;
+      color: white;
+    }
+
+    .container {
+      background: #edf2f7;
+      font-weight: bold;
+      padding-bottom: 10px;
+      border-radius: 15px;
+    }
+
+    canvas {
+      padding: 30px;
+      margin-left: 40%;
+    }
+  </style>
+  <body style="background:#BCBBB8">
+    <h1>STUDENT PERFORMANCE PREDICTION</h1>
+    <a type="submit" class="btn btn-primary btn-lg" href="/">Academic Prediction</a>
+    <a type="submit" class="btn btn-primary btn-lg" href="/crt">Out door Prediction</a>
+    
+    <!--=======================navbar=====================================================-->
+    <!--==========================================================================================-->
+    <div class="container my-3 mt-3">
+      <h1 class="text-success">ACADEMIC PREDICTION <span class="text-success"></span>
+      </h1>
+      <!--      adding form-->
+      <form action="/predict" method="POST">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="Xth_CGPA">First Semister</label>
+            <input type="number" step="0.1" min="0" max="10" Xth_CGPA" name="Xth_CGPA" placeholder="First semister avg score" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label for="Intermediate_CGPA">Second Semister</label>
+            <input type="number" step="0.1" min="0" max="10" id="Intermediate_CGPA" name="Intermediate_CGPA" placeholder="Enter second semister avg score" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label for="First_Semester_CGPA">Third Semister</label>
+            <input type="number" step="0.1"  min="0" max="10"id="First_Semester_CGPA" name="First_Semester_CGPA" placeholder="Enter third semister avg score" class="form-control" required>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <label for="Second_Semester_CGPA">Fourth Semister</label>
+            <input type="number" step="0.1"  min="0" max="10" id="Second_Semester_CGPA" name="Second_Semester_CGPA" placeholder="Enter Fourth semister avg score" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label for="Third_Semester_CGPA">Fifth Semister</label>
+            <input type="number" step="0.1"  min="0" max="10"id="Third_Semester_CGPA" name="Third_Semester_CGPA" placeholder="Enter Fifth semister avg score" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label for="Fourth_Semester_CGPA">Sixth Semister</label>
+            <input type="number" step="0.1"  min="0" max="10"id="Fourth_Semester_CGPA" name="Fourth_Semester_CGPA" placeholder="Enter sixth semister avg score" class="form-control" required>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <label for="Fifth_Semester_CGPA">Seveth Semister</label>
+            <input type="number" step="0.1"  min="0" max="10" id="Fifth_Semester_CGPA" name="Fifth_Semester_CGPA" placeholder="Enter seventh semister avg score" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label for="Clubs_Participation">Clubs Participation</label>
+            <select id="Clubs_Participation" name="Clubs_Participation" class="form-control" required>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="Leadership">Leadership</label>
+            <select id="Leadership" name="Leadership" class="form-control" required>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <!-- <label for="More_than_3_Programming_Lang">More Than 3 Programming Lang</label> -->
+            <select id="More_than_3_Programming_Lang" name="More_than_3_Programming_Lang" value="No" class="form-control" required hidden>
+              <option value="1" selected>Yes</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <!-- <label for="Laboratory_Skills">Laboratory Skills</label> -->
+            <select id="Laboratory_Skills" name="Laboratory_Skills" class="form-control" value="No" required hidden>
+              <option value="1" selected>Yes</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Get Prediction</button>
+          </div>
+        </div>
+      </form> {% if result %} <canvas id="gaugeCanvas" width="200" height="200"></canvas> {% endif %}
+      {% if result %} <h3 style="color: {% if result >= '90' %}green{% elif result >= '80' %}orange{% else %}red{% endif %};">{{ message }}</h3> {% endif %}
+    </div>
+    <script>
+      // Function to draw the percentage gauge
+      function drawGauge(percentage) {
+        var canvas = document.getElementById("gaugeCanvas");
+        var ctx = canvas.getContext("2d");
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Draw the outer circle
+        ctx.beginPath();
+        ctx.arc(100, 100, 90, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#ccc";
+        ctx.lineWidth = 15;
+        ctx.stroke();
+        // Draw the filled portion based on the percentage
+        ctx.beginPath();
+        ctx.arc(100, 100, 90, -0.5 * Math.PI, (2 * percentage / 100 - 0.5) * Math.PI);
+        ctx.strokeStyle = "#4CAF50";
+        ctx.lineWidth = 15;
+        ctx.stroke();
+        // Display the percentage text
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "#333";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(percentage + "%", 100, 100);
+      }
+      // Example usage: Draw the gauge with the provided percentage value
+      drawGauge({{ result | replace('%', '')}});
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  </body>
+</html>
